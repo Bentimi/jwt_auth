@@ -41,11 +41,11 @@ const   signup = async (req, res) => {
         //     `Your OTP for account verification is ${otp}. It will expire in 10 minutes.`
         // )
 
-        await sendWelcomeEmail({ 
-            email, 
-            name,
-            loginUrl: process.env.LOGIN_URL
-            }).catch(err => console.error('Welcome email failed:', err));
+        // await sendWelcomeEmail({ 
+        //     email, 
+        //     name,
+        //     loginUrl: process.env.LOGIN_URL
+        //     }).catch(err => console.error('Welcome email failed:', err));
 
         return res.status(201).json({message: 'User created successfully'});
     } catch (e) {
@@ -85,13 +85,13 @@ const login = async (req, res) => {
         user.otp = null;
         await user.save();
 
-        await sendLoginNotification({
-        email: user.email,
-        name: user.name,
-        location: req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown',
-        device: req.headers['user-agent'] || 'Web Browser',
-        resetPasswordUrl: process.env.FORGOT_PASSWORD_URL
-        })
+        // await sendLoginNotification({
+        // email: user.email,
+        // name: user.name,
+        // location: req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown',
+        // device: req.headers['user-agent'] || 'Web Browser',
+        // resetPasswordUrl: process.env.FORGOT_PASSWORD_URL
+        // })
 
         return res.status(200).json({message: 'Login successful', token});
  
@@ -124,13 +124,13 @@ const forgetPassword = async (req, res) => {
 
 
         const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:8000'}/reset-password?token=${resetToken}`;
-        sendPasswordResetEmail({
-        email: user.email,
-        name: user.name,
-        resetToken,
-        resetUrl,
-        expiryTime: '1 hour'
-        })
+        // sendPasswordResetEmail({
+        // email: user.email,
+        // name: user.name,
+        // resetToken,
+        // resetUrl,
+        // expiryTime: '1 hour'
+        // })
 
         return res.status(200).json({message: 'Forgotten Password, OTP expires in 10 minutes', otp})
         
